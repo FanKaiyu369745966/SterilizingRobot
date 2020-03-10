@@ -91,6 +91,7 @@
     <QtMoc Include="RobotRemoteControl.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ControlWidget.ui" />
     <QtUic Include="RobotRemoteControl.ui" />
   </ItemGroup>
   <ItemGroup>

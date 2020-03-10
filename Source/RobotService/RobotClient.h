@@ -178,4 +178,6 @@ public slots:
 	void SubscriberBreak();
 private:
 	void Thread();
+	QString CreatePackage(QString fUuid, QString tUuid, QJsonObject jCmd);
+	QString CreatePackage(QString fUuid, QString tUuid, QJsonObject jCmd, QJsonObject jResult);
 };

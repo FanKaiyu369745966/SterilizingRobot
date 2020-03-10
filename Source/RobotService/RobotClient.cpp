@@ -80,19 +80,14 @@ void RobotClient::SubscriberBreak()
 	RobotClient* _subscriber = (RobotClient*)sender();
 
 	// 返回结果
-	QJsonObject _jResult, _jValue, _jobjCmd;
+	QJsonObject _jResult, _jobjCmd;
 
 	_jobjCmd.insert("Take", "");
-	_jValue.insert(_subscriber->GetUuid(), false);
-
-	_jResult.insert("Client", m_strUuid);
-	_jResult.insert("Date", GetDate());
-	_jResult.insert("Cmd", _jobjCmd);
-	_jResult.insert("Result", _jValue);
+	_jResult.insert(_subscriber->GetUuid(), false);
 
 	m_mutex.lock();
 
-	QString	_result = "|" + QString(QJsonDocument(_jResult).toJson());
+	QString	_result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
 
 	m_socket->write(_result.toLatin1());
 	m_socket->flush();
@@ -130,17 +125,13 @@ void RobotClient::Thread()
 				m_tpClock = std::chrono::steady_clock::now();
 			}
 
-			QJsonObject _jResult, _jobjCmd;
+			QJsonObject _jobjCmd;
 
 			_jobjCmd.insert("Hand", "");
 
-			_jResult.insert("Client", m_strUuid);
-			_jResult.insert("Date", GetDate());
-			_jResult.insert("Cmd", _jobjCmd);
-
 			m_mutex.lock();
 
-			QString	_result = "|" + QString(QJsonDocument(_jResult).toJson());
+			QString	_result = CreatePackage("", m_strUuid, _jobjCmd);
 
 			m_socket->write(_result.toLatin1());
 			m_socket->flush();
@@ -160,13 +151,58 @@ void RobotClient::Thread()
 	return;
 }
 
+QString RobotClient::CreatePackage(QString fUuid, QString tUuid, QJsonObject jCmd)
+{
+	QJsonObject _jPkg;
+
+	_jPkg.insert("From", fUuid);
+	_jPkg.insert("To", tUuid);
+	_jPkg.insert("Date", GetDate());
+	_jPkg.insert("Cmd", jCmd);
+
+	return "|" + QString(QJsonDocument(_jPkg).toJson());
+}
+
+QString RobotClient::CreatePackage(QString fUuid, QString tUuid, QJsonObject jCmd, QJsonObject jResult)
+{
+	QJsonObject _jPkg;
+
+	_jPkg.insert("From", fUuid);
+	_jPkg.insert("To", tUuid);
+	_jPkg.insert("Date", GetDate());
+	_jPkg.insert("Cmd", jCmd);
+	_jPkg.insert("Result", jResult);
+
+	return "|" + QString(QJsonDocument(_jPkg).toJson());
+}
+
 void RobotClient::SendPackage(QByteArrayList list)
 {
 	QString	_result = "";
 
-	for (QByteArrayList::iterator it = list.begin(); it != list.end(); it = list.erase(it), _result += "|")
+	for (QByteArrayList::iterator it = list.begin(); it != list.end(); it = list.erase(it))
 	{
+		QJsonParseError	_error;
+		QJsonDocument _doc = QJsonDocument::fromJson(*it, &_error);
+
+		if (_error.error != QJsonParseError::NoError)
+		{
+			qDebug() << _error.errorString();
+
+			continue;
+		}
+
+		QJsonObject _jobj = _doc.object();
+
+		QString _uuid = _jobj.value("To").toString();
+
+		if (_uuid.isEmpty() == false && _uuid != m_strUuid)
+		{
+			continue;
+		}
+
 		_result += *it;
+		_result += "|";
 	}
 
 	m_mutex.lock();
@@ -205,10 +241,11 @@ void RobotClient::ReadData()
 
 			QJsonObject _jobj = _doc.object();
 
-			QString _uuid = _jobj.value("Client").toString();
+			QString _uuid = _jobj.value("From").toString();
 
 			if (m_strUuid.isEmpty())
 			{
+				// 注册UUID
 				m_strUuid = _uuid;
 
 				emit Recognition(_uuid);
@@ -227,15 +264,9 @@ void RobotClient::ReadData()
 
 				if (*itK == "Hand" || *itK == "Heart")
 				{
-					QJsonObject _jResult;
-
-					_jResult.insert("Client", m_strUuid);
-					_jResult.insert("Date", GetDate());
-					_jResult.insert("Cmd", _jobjCmd);
-
 					m_mutex.lock();
 
-					QString	_result = "|" + QString(QJsonDocument(_jResult).toJson());
+					QString _result = CreatePackage("", m_strUuid, _jobjCmd);
 
 					m_socket->write(_result.toLatin1());
 					m_socket->flush();
@@ -259,21 +290,16 @@ void RobotClient::ReadData()
 					emit Subscribe(_uuidArray);
 
 					// 返回订阅结果
-					QJsonObject _jResult, _jValue;
+					QJsonObject _jResult;
 
 					for (int i = 0; i < _uuidArray.size(); ++i)
 					{
-						_jValue.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
+						_jResult.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
 					}
-
-					_jResult.insert("Client", m_strUuid);
-					_jResult.insert("Date", GetDate());
-					_jResult.insert("Cmd", _jobjCmd);
-					_jResult.insert("Result", _jValue);
 
 					m_mutex.lock();
 
-					QString	_result = "|" + QString(QJsonDocument(_jResult).toJson());
+					QString _result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
 
 					m_socket->write(_result.toLatin1());
 					m_socket->flush();
@@ -297,21 +323,16 @@ void RobotClient::ReadData()
 					emit Unsubscribe(_uuidArray);
 
 					// 返回结果
-					QJsonObject _jResult, _jValue;
+					QJsonObject _jResult;
 
 					for (int i = 0; i < _uuidArray.size(); ++i)
 					{
-						_jValue.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
+						_jResult.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
 					}
-
-					_jResult.insert("Client", m_strUuid);
-					_jResult.insert("Date", GetDate());
-					_jResult.insert("Cmd", _jobjCmd);
-					_jResult.insert("Result", _jValue);
 
 					m_mutex.lock();
 
-					QString	_result = "|" + QString(QJsonDocument(_jResult).toJson());
+					QString _result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
 
 					m_socket->write(_result.toLatin1());
 					m_socket->flush();
