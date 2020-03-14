@@ -4,7 +4,7 @@
 
 
 ControlBoxWidget::ControlBoxWidget(QWidget* parent)
-	: QWidget(parent)
+	: ImageWidge(parent)
 	, m_axisLeftX(0)
 	, m_axisLeftY(0)
 	, m_axisRightX(0)
@@ -43,6 +43,9 @@ void ControlBoxWidget::Initialize()
 	setAutoFillBackground(true);			//自动设定背景颜色
 	setPalette(QPalette(Qt::black));		//设置调色板的颜色为黑色
 
+	setMinimumSize(640, 480);				//设置绘图区域窗体的最小大小
+	setMaximumSize(1280, 720);				//设置绘图区域窗体的最小大小
+
 	return;
 }
 
@@ -52,6 +55,8 @@ void ControlBoxWidget::Draw(QPainter& painter)
 
 	float _fWidth = _win.width() / 4.0f;
 	//float _fHeight = _win.height() / 2;
+
+	DrawImage(painter, QRect(_fWidth, 0, _fWidth * 2, _win.height() - _fWidth));
 
 	DrawButtonLR(painter, QRect(0, 0, _fWidth, _win.height() - _fWidth), m_buttonL1, m_buttonL2, "LB", "LT");
 
@@ -301,23 +306,30 @@ void ControlBoxWidget::DrawCtrlerStatus(QPainter& painter, QRect rect)
 	QFont _oldFont = painter.font();
 
 	QFont font;
-	font.setPointSize(rect.height() / 10);
+	font.setPointSize(rect.width() / 15);
 	font.setFamily("Microsoft YaHei");
 	font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
 	painter.setFont(font);
 
 	if (m_bConnected)
 	{
-		painter.drawText(rect, Qt::AlignCenter, QString::fromLocal8Bit("控制器：键盘、手柄"));
+		painter.drawText(rect, Qt::AlignBottom | Qt::AlignHCenter, QString::fromLocal8Bit("控制器：键盘、手柄"));
 	}
 	else
 	{
-		painter.drawText(rect, Qt::AlignCenter, QString::fromLocal8Bit("控制器：键盘"));
+		painter.drawText(rect, Qt::AlignBottom | Qt::AlignHCenter, QString::fromLocal8Bit("控制器：键盘"));
 	}
 
 	painter.setFont(_oldFont);
 
 	painter.setPen(Qt::NoPen);
+
+	return;
+}
+
+void ControlBoxWidget::DrawImage(QPainter& painter, QRect rect)
+{
+	painter.drawPixmap(rect, *m_pix);
 
 	return;
 }

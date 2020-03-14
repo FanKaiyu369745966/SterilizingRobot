@@ -219,33 +219,46 @@ void RobotClient::ReadData()
 {
 	if (m_socket->isReadable())
 	{
-		QByteArray _buf = m_socket->readAll();
+		m_buf += m_socket->readAll();
 
-		QByteArrayList _list = _buf.split('|');
+		//qDebug() << m_buf << endl;
 
-		_buf.clear();
+		QByteArrayList _list = m_buf.split('|');
+
+		m_buf.clear();
 
 		QByteArrayList _listPkg;
 
-		qDebug() << _list.size();
+		//qDebug() << _list.size();
 
-		for (QByteArrayList::iterator it = _list.begin(); it != _list.end(); it = _list.erase(it))
+		for (int i = 0; i != _list.size(); ++i)
 		{
+			QByteArray _pkg = _list.at(i);
+
+			//qDebug() << _pkg << endl;
+
 			QJsonParseError	_error;
-			QJsonDocument _doc = QJsonDocument::fromJson(*it, &_error);
+			QJsonDocument _doc = QJsonDocument::fromJson(_pkg, &_error);
 
 			if (_error.error != QJsonParseError::NoError)
 			{
 				//qDebug() << _error.errorString();
 
-				continue;
+				if (i + 1 < _list.size())
+				{
+					continue;
+				}
+
+				m_buf = _list.at(i);
+
+				return;
 			}
 
 			QJsonObject _jobj = _doc.object();
 
 			QString _uuid = _jobj.value("From").toString();
 
-			emit Record("Client", m_strUuid, GetAddress(), "Receive", _doc.toJson());
+			//emit Record("Client", m_strUuid, GetAddress(), "Receive", _doc.toJson());
 
 			QJsonObject	_jobjCmd = _jobj.value("Cmd").toObject();
 
@@ -311,8 +324,8 @@ void RobotClient::ReadData()
 				}
 				else
 				{
-					_jobjCmd.remove(*itK);
 					_jobjOther.insert(*itK, _jobjCmd.value(*itK));
+					_jobjCmd.remove(*itK);
 				}
 			}
 
@@ -329,7 +342,7 @@ void RobotClient::ReadData()
 
 				m_mutex.unlock();
 
-				emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
+				//emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
 			}
 
 			if (_jobjOther.isEmpty() == false)

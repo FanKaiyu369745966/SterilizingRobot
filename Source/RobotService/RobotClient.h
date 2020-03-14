@@ -64,6 +64,7 @@ private:
 	std::thread* m_thread;
 	bool m_bClose;
 	std::chrono::steady_clock::time_point m_tpClock;
+	QByteArray m_buf;
 public:
 	/*!
 	 * @brief 获取当前时间日期

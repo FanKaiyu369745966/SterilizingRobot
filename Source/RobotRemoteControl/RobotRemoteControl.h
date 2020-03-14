@@ -24,6 +24,7 @@
 #include <QMutex>
 #include <QHostaddress> 
 #include <chrono>
+#include <QScrollArea>
 #include "KeyboardSettingsWidget.h"
 #include "RobotClientWidget.h"
 //#include "ui_RobotRemoteControl.h"
@@ -61,6 +62,7 @@ private:
 	QString	m_robotUuid;
 	CtrlKeys m_mov;
 	CtrlKeys m_eyes;
+	QByteArray m_buf;
 private:
 	void InitKeyboard();
 	void Initialize();

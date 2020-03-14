@@ -81,6 +81,9 @@ void RobotRemoteControl::InitKeyboard()
 
 void RobotRemoteControl::Initialize()
 {
+	setMinimumHeight(480);				//设置绘图区域窗体的最小大小
+	setMaximumHeight(720);				//设置绘图区域窗体的最小大小
+
 	QLabel* _labAddr = new QLabel(QString::fromLocal8Bit("地址："), this);					/*!< 服务端地址标签 */
 	m_leditAddr = new QLineEdit(this);														/*!< 服务端地址编辑框 */
 	m_pbutConnect = new QPushButton(QString::fromLocal8Bit("连接"), this);		/*!< 服务端连接按钮 */
@@ -624,15 +627,15 @@ void RobotRemoteControl::RemoveSubTab(int index)
 
 void RobotRemoteControl::axisLeftXChanged(double value)
 {
-	if (value > 0)
+	if (value == 1.0)
 	{// 向右
 		m_mov = CtrlKeys::TurnRight;
 	}
-	else if (value < 0)
+	else if (value == -1.0)
 	{// 向左
 		m_mov = CtrlKeys::TurnLeft;
 	}
-	else
+	else if (value == 0.0)
 	{// 停止
 		if (m_mov == TurnLeft || m_mov == TurnRight)
 		{
@@ -657,15 +660,15 @@ void RobotRemoteControl::axisLeftXChanged(double value)
 
 void RobotRemoteControl::axisLeftYChanged(double value)
 {
-	if (value > 0)
+	if (value == 1.0)
 	{// 向右
 		m_mov = CtrlKeys::MoveBack;
 	}
-	else if (value < 0)
+	else if (value == -1.0)
 	{// 向左
 		m_mov = CtrlKeys::MoveOn;
 	}
-	else
+	else if (value == 0.0)
 	{// 停止
 		if (m_mov == MoveBack || m_mov == MoveOn)
 		{
@@ -1354,24 +1357,35 @@ void RobotRemoteControl::ReadData()
 		return;
 	}
 
-	QByteArray _buf = m_socket->readAll();
+	m_buf += m_socket->readAll();
 
-	QByteArrayList _list = _buf.split('|');
+	QByteArrayList _list = m_buf.split('|');
 
-	_buf.clear();
+	m_buf.clear();
 
 	QByteArrayList _listPkg;
 
-	for (QByteArrayList::iterator it = _list.begin(); it != _list.end(); it = _list.erase(it))
+	for (int i = 0; i != _list.size(); ++i)
 	{
+		QByteArray _pkg = _list.at(i);
+
+		//qDebug() << _pkg << endl;
+
 		QJsonParseError	_error;
-		QJsonDocument _doc = QJsonDocument::fromJson(*it, &_error);
+		QJsonDocument _doc = QJsonDocument::fromJson(_pkg, &_error);
 
 		if (_error.error != QJsonParseError::NoError)
 		{
 			//qDebug() << _error.errorString();
 
-			continue;
+			if (i + 1 < _list.size())
+			{
+				continue;
+			}
+
+			m_buf = _list.at(i);
+
+			return;
 		}
 
 		QJsonObject _jobj = _doc.object();
@@ -1538,7 +1552,7 @@ void RobotRemoteControl::Thread()
 					}
 				}
 
-				if (m_mov != CtrlKeys::Unknow)
+				if (m_eyes != CtrlKeys::Unknow)
 				{
 					switch (m_eyes)
 					{
@@ -1563,20 +1577,26 @@ void RobotRemoteControl::Thread()
 				}
 			}
 
-			_jCmd.insert("Take", _array);
-
-			std::chrono::milliseconds dis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _tp);
-
-			if (dis.count() > 1000)
+			if (_array.size() > 0)
 			{
-				m_mutex.lock();
+				_jCmd.insert("Take", _array);
+			}
 
-				m_socket->write(CreatePackage("", _jCmd).toLatin1());
-				m_socket->flush();
+			if (_jCmd.isEmpty() == false)
+			{
+				std::chrono::milliseconds dis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _tp);
 
-				m_mutex.unlock();
+				if (dis.count() > 1000)
+				{
+					m_mutex.lock();
 
-				_tp = std::chrono::steady_clock::now();
+					m_socket->write(CreatePackage("", _jCmd).toLatin1());
+					m_socket->flush();
+
+					m_mutex.unlock();
+
+					_tp = std::chrono::steady_clock::now();
+				}
 			}
 		}
 		else
@@ -1834,7 +1854,8 @@ void RobotRemoteControl::UpdateRobot(QString uuid, QByteArray img)
 	if (m_mapRobotWidgets.find(uuid) != m_mapRobotWidgets.end())
 	{
 		// 更新机器人连接状态
-		m_mapRobotWidgets[uuid]->m_wImage->Load(img, "JPG");
+		//m_mapRobotWidgets[uuid]->m_wImage->Load(img, "JPG");
+		m_mapRobotWidgets[uuid]->m_wCtrlbox->Load(img, "JPG");
 	}
 
 	return;

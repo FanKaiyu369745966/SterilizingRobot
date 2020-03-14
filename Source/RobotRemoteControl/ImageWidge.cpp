@@ -1,4 +1,5 @@
 ﻿#include "ImageWidge.h"
+#include <QDebug>
 
 ImageWidge::ImageWidge(QWidget* parent)
 	: QWidget(parent)
@@ -19,7 +20,6 @@ void ImageWidge::Initialize()
 	setPalette(QPalette(Qt::gray));		//设置调色板的颜色为灰色
 	m_pix = new QPixmap(size());			//这个pixmap对象用来接受准备绘制到空间的内容
 	m_pix->fill(Qt::gray);					//填充这个图片的背景是灰色
-	setMinimumSize(400, 200);				//设置绘图区域窗体的最小大小
 
 	return;
 }
@@ -33,6 +33,8 @@ void ImageWidge::Load(QByteArray data, QString type)
 
 	*m_pix = QPixmap::fromImageReader(&_reader);
 
+	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
+
 	update();
 
 	return;
@@ -43,6 +45,8 @@ void ImageWidge::Load(QString path)
 	QImage img(path);
 
 	*m_pix = QPixmap::fromImage(img);
+
+	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
 
 	update();
 
@@ -56,6 +60,7 @@ void ImageWidge::Load(QString path, QString type)
 	_reader.setFormat(type.toLatin1());
 
 	*m_pix = QPixmap::fromImageReader(&_reader);
+	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
 
 	update();
 
@@ -66,7 +71,7 @@ void ImageWidge::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);						//得到当前控件绘制工具
 
-	painter.drawPixmap(QPoint(0, 0), *m_pix);     //重0,0开始绘制这个图片
+	painter.drawPixmap(this->rect(), *m_pix);     //重0,0开始绘制这个图片
 
 	return;
 }

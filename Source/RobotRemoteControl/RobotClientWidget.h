@@ -7,7 +7,7 @@
 #include <QGroupBox>
 #include "SLAMMapWidget.h"
 #include "ControlBoxWidget.h"
-#include "ImageWidge.h"
+//#include "ImageWidge.h"
 //#include "ui_RobotClientWidget.h"
 
 class RobotClientWidget : public QWidget
@@ -23,7 +23,7 @@ private:
 public:
 	SLAMMapWidget* m_wSlam;
 	ControlBoxWidget* m_wCtrlbox;
-	ImageWidge* m_wImage;
+	//ImageWidge* m_wImage;
 private:
 	QLineEdit* m_leditUuid;
 	QLineEdit* m_leditStatus;

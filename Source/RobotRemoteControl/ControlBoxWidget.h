@@ -5,11 +5,12 @@
 #include <QResizeEvent>
 #include <QPainter>
 #include <QtMath>
+#include "ImageWidge.h"
 //#include "ui_ControlBoxWidget.h"
 
 enum CtrlKeys;
 
-class ControlBoxWidget : public QWidget
+class ControlBoxWidget : public ImageWidge
 {
 	Q_OBJECT
 
@@ -58,6 +59,7 @@ private:
 	void DrawButton(QPainter&, QRect, bool, QString);
 	void DrawButtonLR(QPainter&, QRect, bool, double, QString, QString);
 	void DrawCtrlerStatus(QPainter&, QRect);
+	void DrawImage(QPainter&, QRect);
 	/*!
 	 * @brief 获取小圆的中心坐标
 	 * @arg QPoint 大圆的中心坐标
