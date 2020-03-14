@@ -248,7 +248,7 @@ void RobotService::Load()
 	// 读取配置信息
 	QString _srvAddr = "", _dbHost = "",/* _dbName = "",*/ _dbUser = "", _dbPwd = "";
 
-	QFile _fileConfig("Config/Config.ini");
+	QFile _fileConfig("Config/Server.ini");
 
 	// 清空文件中的数据，若没有文件，则创建文件 并打开文件
 	if (_fileConfig.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -311,7 +311,7 @@ void RobotService::Save()
 	_jobjRoot.insert("Database", _jobjDb);
 
 	// 创建配置文件
-	QFile _fileSrvConfig("Config/Config.ini");
+	QFile _fileSrvConfig("Config/Server.ini");
 
 	// 清空文件中的数据，若没有文件，则创建文件 并打开文件
 	if (_fileSrvConfig.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -353,6 +353,7 @@ void RobotService::UpdateClient(QString addr, QString uuid)
 		}
 
 		m_modelClnt->item(i, 1)->setText(uuid);
+		m_modelClnt->item(i, 1)->setToolTip(uuid);
 	}
 
 	return;
@@ -386,6 +387,7 @@ void RobotService::UpdateClient(QString addr, QStringList takeList)
 		}
 
 		m_modelClnt->item(i, 2)->setText(_takes);
+		m_modelClnt->item(i, 2)->setToolTip(_takes);
 	}
 
 	return;

@@ -80,19 +80,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ControlBoxWidget.cpp" />
+    <ClCompile Include="ImageWidge.cpp" />
+    <ClCompile Include="KeyboardSettingsWidget.cpp" />
+    <ClCompile Include="KeyEdit.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Robot.cpp" />
     <ClCompile Include="RobotBase.cpp" />
+    <ClCompile Include="RobotClientWidget.cpp" />
     <ClCompile Include="RobotEyes.cpp" />
     <ClCompile Include="RobotRemoteControl.cpp" />
+    <ClCompile Include="SLAMMapWidget.cpp" />
     <ClCompile Include="Spray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RobotRemoteControl.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="ControlWidget.ui" />
+    <QtUic Include="ControlBoxWidget.ui" />
+    <QtUic Include="ImageWidge.ui" />
+    <QtUic Include="KeyboardSettingsWidget.ui" />
+    <QtUic Include="KeyEdit.ui" />
+    <QtUic Include="RobotClientWidget.ui" />
     <QtUic Include="RobotRemoteControl.ui" />
+    <QtUic Include="SLAMMapWidget.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RobotRemoteControl.qrc" />
@@ -108,6 +119,24 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Robot.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="KeyboardSettingsWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="KeyEdit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="SLAMMapWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ControlBoxWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="RobotClientWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ImageWidge.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

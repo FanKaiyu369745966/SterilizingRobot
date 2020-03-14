@@ -227,6 +227,8 @@ void RobotClient::ReadData()
 
 		QByteArrayList _listPkg;
 
+		qDebug() << _list.size();
+
 		for (QByteArrayList::iterator it = _list.begin(); it != _list.end(); it = _list.erase(it))
 		{
 			QJsonParseError	_error;
@@ -234,7 +236,7 @@ void RobotClient::ReadData()
 
 			if (_error.error != QJsonParseError::NoError)
 			{
-				qDebug() << _error.errorString();
+				//qDebug() << _error.errorString();
 
 				continue;
 			}
@@ -243,37 +245,28 @@ void RobotClient::ReadData()
 
 			QString _uuid = _jobj.value("From").toString();
 
-			if (m_strUuid.isEmpty())
-			{
-				// 注册UUID
-				m_strUuid = _uuid;
-
-				emit Recognition(_uuid);
-			}
-
 			emit Record("Client", m_strUuid, GetAddress(), "Receive", _doc.toJson());
 
 			QJsonObject	_jobjCmd = _jobj.value("Cmd").toObject();
 
 			QStringList _keys = _jobjCmd.keys();
 
+			QJsonObject	_jobjOther;
+
+			// 返回订阅结果
+			QJsonObject _jResult;
+
 			for (QStringList::iterator itK = _keys.begin(); itK != _keys.end(); ++itK)
 			{
-
-				_sleep(1);
-
 				if (*itK == "Hand" || *itK == "Heart")
 				{
-					m_mutex.lock();
+					if (m_strUuid.isEmpty())
+					{
+						// 注册UUID
+						m_strUuid = _uuid;
 
-					QString _result = CreatePackage("", m_strUuid, _jobjCmd);
-
-					m_socket->write(_result.toLatin1());
-					m_socket->flush();
-
-					m_mutex.unlock();
-
-					emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
+						emit Recognition(_uuid);
+					}
 				}
 				else if (*itK == "Take")
 				{
@@ -289,24 +282,10 @@ void RobotClient::ReadData()
 
 					emit Subscribe(_uuidArray);
 
-					// 返回订阅结果
-					QJsonObject _jResult;
-
 					for (int i = 0; i < _uuidArray.size(); ++i)
 					{
 						_jResult.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
 					}
-
-					m_mutex.lock();
-
-					QString _result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
-
-					m_socket->write(_result.toLatin1());
-					m_socket->flush();
-
-					m_mutex.unlock();
-
-					emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
 				}
 				else if (*itK == "Remove")
 				{
@@ -329,24 +308,38 @@ void RobotClient::ReadData()
 					{
 						_jResult.insert(_uuidArray.at(i).m_uuid, _uuidArray.at(i).m_result);
 					}
-
-					m_mutex.lock();
-
-					QString _result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
-
-					m_socket->write(_result.toLatin1());
-					m_socket->flush();
-
-					m_mutex.unlock();
-
-					emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
 				}
 				else
 				{
-					_listPkg.push_back(*it);
+					_jobjCmd.remove(*itK);
+					_jobjOther.insert(*itK, _jobjCmd.value(*itK));
 				}
 			}
+
+			if (_jobjCmd.isEmpty() == false)
+			{
+				_sleep(1);
+
+				m_mutex.lock();
+
+				QString _result = CreatePackage("", m_strUuid, _jobjCmd, _jResult);
+
+				m_socket->write(_result.toLatin1());
+				m_socket->flush();
+
+				m_mutex.unlock();
+
+				emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
+			}
+
+			if (_jobjOther.isEmpty() == false)
+			{
+				_jobj.insert("Cmd", _jobjOther);
+				_listPkg.push_back(QJsonDocument(_jobj).toJson());
+			}
 		}
+
+		//qDebug() << _list.size();
 
 		if (_listPkg.size() > 0)
 		{

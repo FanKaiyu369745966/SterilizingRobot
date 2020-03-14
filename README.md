@@ -40,29 +40,29 @@
     1、握手指令
     服务端发送至客户端，要求客户端表明自身的身份。指令持续发送30s,每隔1s发送1次，当30s后客户端仍未表明身份，则释放该客户端资源。
     {
-        “From”:"",     
+        "From":"",     
         "to":"",
-        "Date":"2020/01/02 11:11:11"
+        "Date":"2020/01/02 11:11:11",
         "Cmd":{
-            "Hand":NULL
+            "Hand":0
         }
     }
     客户端收到指令后回复服务端自身的身份
-    {
-        “From”:"1",     
+   {
+        "From":"1001",     
         "to":"",
-        "Date":"2020/01/02 11:11:12"
+        "Date":"2020/01/02 11:11:11",
         "Cmd":{
-            "Hand":NULL
+            "Hand":0
         }
     }
     服务端收到客户端表明的身份后返回指令表示收到了客户端的身份信息
-    {
-        “From”:"",     
-        "to":"1",
-        "Date":"2020/01/02 11:11:13"
+   {
+        "From":"",     
+        "to":"1001",
+        "Date":"2020/01/02 11:11:11",
         "Cmd":{
-            "Hand":NULL
+            "Hand":0
         }
     }
 
@@ -118,6 +118,49 @@
 
     4、数据更新指令
     5、远程控制指令
+    {
+        “From”:"1",
+        "To":"2",
+        "Date":"2020/01/02 11:11:14",
+        "Cmd":{
+            "Control":{
+                “Base”:"MoveOn",        // MoveOn 底盘向前移动 MoveBack 底盘后退 TurnLeft 左转 TurnRight 右转
+                "LSpeed":"",            // 移动时的线速度百分比，eg:10 代表以10%的速度移动
+                "ASpeed":"",            // 转向时的角速度百分比，同上
+                "Eyes":"LookUp",        // LookUp 摄像头向上转 LookDown 摄像头向下转 LookLeft 摄像头向左转 LookRight 摄像头向右转
+                "Light":true,     // 辅助灯开关 true为开，false为关
+                "Spray":false,          // 喷雾器开关，同上
+            }
+        }
+    }
+
+    AGV返回
+    {
+        “From”:"1",
+        "To":"2",
+        "Date":"2020/01/02 11:11:14",
+        "Cmd":{
+            "Control":{
+                “Base”:"MoveOn",        // MoveOn 底盘向前移动 MoveBack 底盘后退 TurnLeft 左转 TurnRight 右转
+                "LSpeed":"",            // 移动时的线速度百分比，eg:10 代表以10%的速度移动
+                "ASpeed":"",            // 转向时的角速度百分比，同上
+                "Eyes":"LookUp",        // LookUp 摄像头向上转 LookDown 摄像头向下转 LookLeft 摄像头向左转 LookRight 摄像头向右转
+                "LightSwitch":true,     // 辅助灯开关 true为开，false为关
+                "Spray":false,          // 喷雾器开关，同上
+            }
+        }
+        “Result”:
+        {
+            "Control":{
+                “Base”:true,            // 执行成功返回true,否则返回false
+                "LSpeed":false,
+                "ASpeed":false,
+                "Eyes":true,
+                "LightSwitch":false,
+                "Spray":false,
+            }
+        }
+    }
     6、心跳指令
     用以确定通信两端信息通道的报文
     {
@@ -128,3 +171,74 @@
             "Haert":NULL
         }
     }
+	
+	7、摄像头截图返回（实时）
+	 {
+        “From”:"1001",     
+        "To":"",
+        "Date":"2020/01/02 11:11:14"
+        "Cmd":{
+            "Camera":"(摄像头截图base64编码)"
+        }
+    }
+	8、设备状态返回（实时）
+	{
+		“From”:"1001",     
+		"To":"",
+		"Date":"2020/01/02 11:11:14"
+		"Cmd":{
+			"Device":{
+				"Base": "MoveOn",    	// MoveOn 底盘向前移动 MoveBack 底盘后退 TurnLeft 左转 TurnRight 右转（最后一次接收的值）
+				"LSpeed":1,      		// 移动时的线速度百分比（最后一次接收的值）
+                "ASpeed":1,      		// 转向时的角速度百分比（最后一次接收的值）
+				"Spray":true,     		// 喷雾器开关 true为开，false为关
+				"Electric":0,			// 电量 0-100
+				“Water”:0				// 水量 0-100
+			}
+		}
+    }
+	
+	#工控机与底盘通信报文
+	
+	1、工控机发送给底盘
+	{
+		"Mov":{				// 移动控制
+			"SPeedL":00,	// 左轮速度0-100
+			"SpeedR":00	 	// 右轮速度0-100
+		},	
+		“Ctrl":{			// 设备控制
+			"Spray":false		// 喷雾器控制 true为开，false为关
+		}	
+	}
+	2、底盘上传给工控机
+	{
+		“State”:{		// 底盘状态		
+			"Spray":false	 // 喷雾器开关状态 true为开，false为关
+		},	
+		"Data":{		// 底盘数据
+			"SPeedL":100,
+			"SpeedR":10,
+			“EcodeL”:00000，		// 左轮编码器值
+			“EcodeR”:00000，		// 右轮编码器值
+			"Electric":0,			// 电量0-100%
+			“Water”:0,				// 水量0-100%
+			"IMU":{			// 姿态传感器数据
+				"GryX":0,		// 陀螺仪X轴数据
+				“GryY”:0,		// 陀螺仪Y轴数据
+				“GryZ”:0,		// 陀螺仪Z轴数据
+				"AccX":0,		// 加速度计X轴数据
+				"AccY":0,		// 加速度计Y轴数据
+				"AccZ":0,		// 加速度计Z轴数据
+				"MagX":0,		// 磁力计X轴数据
+				"MagY":0,		// 磁力计Y轴数据
+				"MagZ":0		// 磁力计Z轴数据
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	

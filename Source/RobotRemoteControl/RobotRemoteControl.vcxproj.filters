@@ -43,6 +43,24 @@
     <ClCompile Include="Robot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardSettingsWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SLAMMapWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlBoxWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RobotClientWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageWidge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RobotRemoteControl.h">
@@ -60,12 +78,45 @@
     <QtMoc Include="Robot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="KeyboardSettingsWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="KeyEdit.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SLAMMapWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ControlBoxWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RobotClientWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageWidge.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="RobotRemoteControl.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="ControlWidget.ui">
+    <QtUic Include="KeyboardSettingsWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="KeyEdit.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SLAMMapWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ControlBoxWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="RobotClientWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ImageWidge.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
