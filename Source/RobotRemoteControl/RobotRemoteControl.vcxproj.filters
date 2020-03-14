@@ -31,18 +31,6 @@
     <ClCompile Include="RobotRemoteControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RobotBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RobotEyes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Spray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Robot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardSettingsWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,18 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RobotRemoteControl.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="RobotBase.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="RobotEyes.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Spray.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="Robot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="KeyboardSettingsWidget.h">

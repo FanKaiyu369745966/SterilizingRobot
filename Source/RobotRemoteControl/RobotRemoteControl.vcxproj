@@ -85,13 +85,9 @@
     <ClCompile Include="KeyboardSettingsWidget.cpp" />
     <ClCompile Include="KeyEdit.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Robot.cpp" />
-    <ClCompile Include="RobotBase.cpp" />
     <ClCompile Include="RobotClientWidget.cpp" />
-    <ClCompile Include="RobotEyes.cpp" />
     <ClCompile Include="RobotRemoteControl.cpp" />
     <ClCompile Include="SLAMMapWidget.cpp" />
-    <ClCompile Include="Spray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RobotRemoteControl.h" />
@@ -107,18 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="RobotRemoteControl.qrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="RobotBase.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="RobotEyes.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="Spray.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="Robot.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="KeyboardSettingsWidget.h" />
