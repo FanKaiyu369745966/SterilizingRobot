@@ -37,6 +37,8 @@ RobotRemoteControl::RobotRemoteControl(QWidget* parent)
 	QObject::connect(m_socket, &QTcpSocket::readyRead, this, &RobotRemoteControl::ReadData);
 	QObject::connect(m_socket, &QTcpSocket::disconnected, this, &RobotRemoteControl::ServerDisconnected);
 
+	QObject::connect(this, &RobotRemoteControl::Send, this, &RobotRemoteControl::SendPackage);
+
 	InitKeyboard();
 
 	Load();
@@ -70,6 +72,7 @@ void RobotRemoteControl::InitKeyboard()
 
 	m_mapCtrlKeys[Qt::Key::Key_1] = LightSwitch;
 	m_mapCtrlKeys[Qt::Key::Key_2] = SpraySwitch;
+	m_mapCtrlKeys[Qt::Key::Key_3] = ResetView;
 
 	m_mapCtrlKeys[Qt::Key::Key_I] = LookUp;
 	m_mapCtrlKeys[Qt::Key::Key_K] = LookDown;
@@ -301,6 +304,9 @@ void RobotRemoteControl::Save()
 		case LookRight:
 			_jobjKeys.insert(_strKey, "LookRight");
 			break;
+		case ResetView:
+			_jobjKeys.insert(_strKey, "ResetView");
+			break;
 		}
 	}
 
@@ -413,6 +419,10 @@ void RobotRemoteControl::Load()
 			{
 				_board[_key] = LookRight;
 			}
+			else if (_strValue == "ResetView")
+			{
+				_board[_key] = ResetView;
+			}
 		}
 
 		if (_board.size() > 0)
@@ -472,46 +482,49 @@ void RobotRemoteControl::keyPressEvent(QKeyEvent* event)
 		switch (m_mapCtrlKeys[(Qt::Key)event->key()])
 		{
 		case MoveOn:
-			_widget->m_wCtrlbox->axisLeftYChanged(-1.0);
+			axisLeftYChanged(-1.0);
 			break;/*!< 前进按键 */
 		case MoveBack:
-			_widget->m_wCtrlbox->axisLeftYChanged(1.0);
+			axisLeftYChanged(1.0);
 			break;/*!< 后退按键 */
 		case TurnLeft:
-			_widget->m_wCtrlbox->axisLeftXChanged(-1.0);
+			axisLeftXChanged(-1.0);
 			break;/*!< 左转按键 */
 		case TurnRight:
-			_widget->m_wCtrlbox->axisLeftXChanged(1.0);
+			axisLeftXChanged(1.0);
 			break;/*!< 右转按键 */
 		case LSpeedUp:
-			_widget->m_wCtrlbox->buttonUpChanged(true);
+			buttonUpChanged(true);
 			break;/*!< 线速度加速按键 */
 		case LSpeedDown:
-			_widget->m_wCtrlbox->buttonDownChanged(true);
+			buttonDownChanged(true);
 			break;/*!< 线速度减速按键 */
 		case ASpeedUp:
-			_widget->m_wCtrlbox->buttonLeftChanged(true);
+			buttonLeftChanged(true);
 			break;/*!< 角速度加速按键 */
 		case ASpeedDown:
-			_widget->m_wCtrlbox->buttonRightChanged(true);
+			buttonRightChanged(true);
 			break;/*!< 角速度减速按键 */
 		case LightSwitch:
-			_widget->m_wCtrlbox->buttonL1Changed(true);
+			buttonL1Changed(true);
 			break;/*!< 辅助灯开关 */
 		case SpraySwitch:
-			_widget->m_wCtrlbox->buttonR1Changed(true);
+			buttonR1Changed(true);
 			break;/*!< 喷雾开关 */
 		case LookUp:
-			_widget->m_wCtrlbox->axisRightYChanged(-1.0);
+			axisRightYChanged(-1.0);
 			break;/*!< 摄像头抬起按键 */
 		case LookDown:
-			_widget->m_wCtrlbox->axisRightYChanged(1.0);
+			axisRightYChanged(1.0);
 			break;/*!< 摄像头低下按键 */
 		case LookLeft:
-			_widget->m_wCtrlbox->axisRightXChanged(-1.0);
+			axisRightXChanged(-1.0);
 			break;/*!< 摄像头左转按键 */
 		case LookRight:
-			_widget->m_wCtrlbox->axisRightXChanged(1.0);
+			axisRightXChanged(1.0);
+			break;/*!< 摄像头右转按键 */
+		case ResetView:
+			buttonR3Changed(true);
 			break;/*!< 摄像头右转按键 */
 		}
 	}
@@ -538,46 +551,49 @@ void RobotRemoteControl::keyReleaseEvent(QKeyEvent* event)
 		switch (m_mapCtrlKeys[(Qt::Key)event->key()])
 		{
 		case MoveOn:
-			_widget->m_wCtrlbox->axisLeftYChanged(0);
+			axisLeftYChanged(0);
 			break;/*!< 前进按键 */
 		case MoveBack:
-			_widget->m_wCtrlbox->axisLeftYChanged(0);
+			axisLeftYChanged(0);
 			break;/*!< 后退按键 */
 		case TurnLeft:
-			_widget->m_wCtrlbox->axisLeftXChanged(0);
+			axisLeftXChanged(0);
 			break;/*!< 左转按键 */
 		case TurnRight:
-			_widget->m_wCtrlbox->axisLeftXChanged(0);
+			axisLeftXChanged(0);
 			break;/*!< 右转按键 */
 		case LSpeedUp:
-			_widget->m_wCtrlbox->buttonUpChanged(false);
+			buttonUpChanged(false);
 			break;/*!< 线速度加速按键 */
 		case LSpeedDown:
-			_widget->m_wCtrlbox->buttonDownChanged(false);
+			buttonDownChanged(false);
 			break;/*!< 线速度减速按键 */
 		case ASpeedUp:
-			_widget->m_wCtrlbox->buttonLeftChanged(false);
+			buttonLeftChanged(false);
 			break;/*!< 角速度加速按键 */
 		case ASpeedDown:
-			_widget->m_wCtrlbox->buttonRightChanged(false);
+			buttonRightChanged(false);
 			break;/*!< 角速度减速按键 */
 		case LightSwitch:
-			_widget->m_wCtrlbox->buttonL1Changed(false);
+			buttonL1Changed(false);
 			break;/*!< 辅助灯开关 */
 		case SpraySwitch:
-			_widget->m_wCtrlbox->buttonR1Changed(false);
+			buttonR1Changed(false);
 			break;/*!< 喷雾开关 */
 		case LookUp:
-			_widget->m_wCtrlbox->axisRightYChanged(0);
+			axisRightYChanged(0);
 			break;/*!< 摄像头抬起按键 */
 		case LookDown:
-			_widget->m_wCtrlbox->axisRightYChanged(0);
+			axisRightYChanged(0);
 			break;/*!< 摄像头低下按键 */
 		case LookLeft:
-			_widget->m_wCtrlbox->axisRightXChanged(0);
+			axisRightXChanged(0);
 			break;/*!< 摄像头左转按键 */
 		case LookRight:
-			_widget->m_wCtrlbox->axisRightXChanged(0);
+			axisRightXChanged(0);
+			break;/*!< 摄像头右转按键 */
+		case ResetView:
+			buttonR3Changed(false);
 			break;/*!< 摄像头右转按键 */
 		}
 	}
@@ -839,12 +855,7 @@ void RobotRemoteControl::buttonDownChanged(bool value)
 
 	_jCmd.insert("Control", _jCtrl);
 
-	m_mutex.lock();
-
-	m_socket->write(CreatePackage("", _jCmd).toLatin1());
-	m_socket->flush();
-
-	m_mutex.unlock();
+	SendPackage(CreatePackage("", _jCmd));
 
 	return;
 }
@@ -941,19 +952,16 @@ void RobotRemoteControl::buttonLeftChanged(bool value)
 
 	if (_widget->ArcSpeed() + 5 > 100)
 	{
-		return;
+		_jCtrl.insert("ASpeed", 100);
 	}
-
-	_jCtrl.insert("ASpeed", _widget->ArcSpeed() + 5);
+	else
+	{
+		_jCtrl.insert("ASpeed", _widget->ArcSpeed() + 5);
+	}
 
 	_jCmd.insert("Control", _jCtrl);
 
-	m_mutex.lock();
-
-	m_socket->write(CreatePackage("", _jCmd).toLatin1());
-	m_socket->flush();
-
-	m_mutex.unlock();
+	SendPackage(CreatePackage("", _jCmd));
 
 	return;
 }
@@ -991,12 +999,7 @@ void RobotRemoteControl::buttonR1Changed(bool value)
 
 	_jCmd.insert("Control", _jCtrl);
 
-	m_mutex.lock();
-
-	m_socket->write(CreatePackage("", _jCmd).toLatin1());
-	m_socket->flush();
-
-	m_mutex.unlock();
+	SendPackage(CreatePackage("", _jCmd));
 
 	return;
 }
@@ -1030,7 +1033,21 @@ void RobotRemoteControl::buttonR3Changed(bool value)
 		return;
 	}
 
-	((RobotClientWidget*)m_tab->currentWidget())->m_wCtrlbox->buttonR3Changed(value);
+	RobotClientWidget* _widget = ((RobotClientWidget*)m_tab->currentWidget());
+	_widget->m_wCtrlbox->buttonR3Changed(value);
+
+	if (_widget->IsConnected() == false)
+	{
+		return;
+	}
+
+	QJsonObject _jCmd, _jCtrl;
+
+	_jCtrl.insert("Eyes", "Reset");
+
+	_jCmd.insert("Control", _jCtrl);
+
+	SendPackage(CreatePackage("", _jCmd));
 
 	return;
 }
@@ -1066,12 +1083,8 @@ void RobotRemoteControl::buttonRightChanged(bool value)
 
 	_jCmd.insert("Control", _jCtrl);
 
-	m_mutex.lock();
+	SendPackage(CreatePackage("", _jCmd));
 
-	m_socket->write(CreatePackage("", _jCmd).toLatin1());
-	m_socket->flush();
-
-	m_mutex.unlock();
 	return;
 }
 
@@ -1133,19 +1146,16 @@ void RobotRemoteControl::buttonUpChanged(bool value)
 
 	if (_widget->LineSpeed() + 5 > 100)
 	{
-		return;
+		_jCtrl.insert("LSpeed", 100);
 	}
-
-	_jCtrl.insert("LSpeed", _widget->LineSpeed() + 5);
+	else
+	{
+		_jCtrl.insert("LSpeed", _widget->LineSpeed() + 5);
+	}
 
 	_jCmd.insert("Control", _jCtrl);
 
-	m_mutex.lock();
-
-	m_socket->write(CreatePackage("", _jCmd).toLatin1());
-	m_socket->flush();
-
-	m_mutex.unlock();
+	SendPackage(CreatePackage("", _jCmd));
 
 	return;
 }
@@ -1258,12 +1268,7 @@ void RobotRemoteControl::PressedDeleteRobotButton()
 		jUuids.push_back(m_leditUuid->text());
 		jCmd.insert("Remove", jUuids);
 
-		m_mutex.lock();
-
-		m_socket->write(CreatePackage("", jCmd).toLatin1());
-		m_socket->flush();
-
-		m_mutex.unlock();
+		SendPackage(CreatePackage("", jCmd));
 	}
 	else
 	{
@@ -1327,7 +1332,7 @@ void RobotRemoteControl::ServerError(QAbstractSocket::SocketError error)
 
 void RobotRemoteControl::ServerConnected()
 {
-	m_pbutConnect->setText(QString::fromLocal8Bit("中止"));
+	m_pbutConnect->setText(QString::fromLocal8Bit("中断"));
 	m_labDetail->setText(QString::fromLocal8Bit("已连接"));
 	m_pbutConnect->setEnabled(true);
 	m_leditAddr->setReadOnly(true);
@@ -1401,12 +1406,7 @@ void RobotRemoteControl::ReadData()
 		{
 			if (*itK == "Hand" && _self.isEmpty())
 			{
-				m_mutex.lock();
-
-				m_socket->write(CreatePackage(_uuid, _jobjCmd).toLatin1());
-				m_socket->flush();
-
-				m_mutex.unlock();
+				SendPackage(CreatePackage(_uuid, _jobjCmd).toLatin1());
 			}
 			else if (*itK == "Take")
 			{
@@ -1490,6 +1490,18 @@ void RobotRemoteControl::tabCurrentChanged(int index)
 	return;
 }
 
+void RobotRemoteControl::SendPackage(QString package)
+{
+	m_mutex.lock();
+
+	m_socket->write(package.toLatin1());
+	m_socket->flush();
+
+	m_mutex.unlock();
+
+	return;
+}
+
 void RobotRemoteControl::Thread()
 {
 	QGamepadManager* _manager = QGamepadManager::instance();
@@ -1533,6 +1545,8 @@ void RobotRemoteControl::Thread()
 
 			if (m_robotUuid.isEmpty() == false)
 			{
+				/*qDebug() << "Move:" << m_mov;
+				qDebug() << "Eyes:" << m_eyes;*/
 				if (m_mov != CtrlKeys::Unknow)
 				{
 					switch (m_mov)
@@ -1586,14 +1600,9 @@ void RobotRemoteControl::Thread()
 			{
 				std::chrono::milliseconds dis = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - _tp);
 
-				if (dis.count() > 1000)
+				if (dis.count() > 300)
 				{
-					m_mutex.lock();
-
-					m_socket->write(CreatePackage("", _jCmd).toLatin1());
-					m_socket->flush();
-
-					m_mutex.unlock();
+					emit Send(CreatePackage("", _jCmd));
 
 					_tp = std::chrono::steady_clock::now();
 				}

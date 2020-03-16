@@ -35,6 +35,10 @@ void ImageWidge::Load(QByteArray data, QString type)
 
 	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
 
+	double scal = (double)(m_pix->width()) / (double)(m_pix->height());
+
+	setFixedWidth(scal * height());
+
 	update();
 
 	return;
@@ -47,6 +51,10 @@ void ImageWidge::Load(QString path)
 	*m_pix = QPixmap::fromImage(img);
 
 	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
+
+	double scal = (double)(m_pix->width()) / (double)(m_pix->height());
+
+	setFixedWidth(scal * height());
 
 	update();
 
@@ -62,6 +70,10 @@ void ImageWidge::Load(QString path, QString type)
 	*m_pix = QPixmap::fromImageReader(&_reader);
 	m_pix->scaled(this->size(), Qt::KeepAspectRatioByExpanding);
 
+	double scal = (double)(m_pix->width()) / (double)(m_pix->height());
+
+	setFixedWidth(scal * height());
+
 	update();
 
 	return;
@@ -72,6 +84,19 @@ void ImageWidge::paintEvent(QPaintEvent* event)
 	QPainter painter(this);						//得到当前控件绘制工具
 
 	painter.drawPixmap(this->rect(), *m_pix);     //重0,0开始绘制这个图片
+
+	return;
+}
+
+void ImageWidge::resizeEvent(QResizeEvent* event)
+{
+	qDebug() << m_pix->width() << ":" << m_pix->height();
+
+	double scal = (double)(m_pix->width()) / (double)(m_pix->height());
+
+	setFixedWidth(scal * height());
+
+	update();
 
 	return;
 }

@@ -26,4 +26,5 @@ public:
 	void Load(QString path, QString type);
 protected:
 	void paintEvent(QPaintEvent* event);
+	void resizeEvent(QResizeEvent* event);
 };

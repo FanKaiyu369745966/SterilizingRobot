@@ -94,6 +94,9 @@ private:
 	void keyPressEvent(QKeyEvent* event);
 	void keyReleaseEvent(QKeyEvent* event);
 
+signals:
+	void Send(QString);
+
 private slots:
 	/*!
 	 * @brief 移除页签
@@ -145,4 +148,6 @@ private slots:
 	void ReadData();
 
 	void tabCurrentChanged(int index);
+
+	void SendPackage(QString);
 };

@@ -40,7 +40,7 @@ RobotClientWidget::~RobotClientWidget()
 
 void RobotClientWidget::Initialize()
 {
-	m_wSlam = new SLAMMapWidget(this);
+	//m_wSlam = new SLAMMapWidget(this);
 	m_wCtrlbox = new ControlBoxWidget(this);
 	//m_wImage = new ImageWidge(this);
 
@@ -93,21 +93,21 @@ void RobotClientWidget::Initialize()
 
 	QGroupBox* _groupAttr = new QGroupBox(QString::fromLocal8Bit("状态"), this);
 	QGroupBox* _groupImge = new QGroupBox(QString::fromLocal8Bit("图像"), this);
-	QGroupBox* _groupSlam = new QGroupBox(QString::fromLocal8Bit("扫描图"), this);
+	//QGroupBox* _groupSlam = new QGroupBox(QString::fromLocal8Bit("扫描图"), this);
 	//QGroupBox* _groupCtrlbox = new QGroupBox(QString::fromLocal8Bit("控制器"), this);
-	QGroupBox* _groupPath = new QGroupBox(QString::fromLocal8Bit("路线以及工作计划"), this);
+	//QGroupBox* _groupPath = new QGroupBox(QString::fromLocal8Bit("路线以及工作计划"), this);
 
 	QHBoxLayout* _layImage = new QHBoxLayout();
 	_layImage->addWidget(m_wCtrlbox);
 
-	QHBoxLayout* _laySlam = new QHBoxLayout();
-	_laySlam->addWidget(m_wSlam);
+	//QHBoxLayout* _laySlam = new QHBoxLayout();
+	//_laySlam->addWidget(m_wSlam);
 
 	//QHBoxLayout* _layCtrlbox = new QHBoxLayout();
 	//_layCtrlbox->addWidget(m_wCtrlbox);
 
 	_groupImge->setLayout(_layImage);
-	_groupSlam->setLayout(_laySlam);
+	//_groupSlam->setLayout(_laySlam);
 	//_groupCtrlbox->setLayout(_layCtrlbox);
 	_groupAttr->setLayout(_layAttr);
 
@@ -115,9 +115,9 @@ void RobotClientWidget::Initialize()
 
 	_layMain->addWidget(_groupAttr, 0, 0, 2, 1);
 	_layMain->addWidget(_groupImge, 0, 1, 2, 1);
-	_layMain->addWidget(_groupSlam, 0, 2);
+	//_layMain->addWidget(_groupSlam, 0, 2);
 	//_layMain->addWidget(_groupCtrlbox, 1, 1);
-	_layMain->addWidget(_groupPath, 1, 2);
+	//_layMain->addWidget(_groupPath, 1, 2);
 
 	//_layMain->setColumnStretch(1, 2);
 

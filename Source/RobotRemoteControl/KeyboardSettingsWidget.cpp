@@ -14,6 +14,7 @@ KeyboardSettingsWidget::KeyboardSettingsWidget(QWidget* parent)
 
 	, m_leditSs(nullptr)
 	, m_leditLs(nullptr)
+	, m_leditRv(nullptr)
 
 	, m_leditLsu(nullptr)
 	, m_leditLsd(nullptr)
@@ -45,6 +46,7 @@ void KeyboardSettingsWidget::Initialize()
 
 	QLabel* _labLs = new QLabel(QString::fromLocal8Bit("灯开关："), this);
 	QLabel* _labSs = new QLabel(QString::fromLocal8Bit("喷雾开关："), this);
+	QLabel* _labRv = new QLabel(QString::fromLocal8Bit("重置视图："), this);
 
 	QLabel* _labLsu = new QLabel(QString::fromLocal8Bit("移动加速："), this);
 	QLabel* _labLsd = new QLabel(QString::fromLocal8Bit("移动减速："), this);
@@ -64,6 +66,7 @@ void KeyboardSettingsWidget::Initialize()
 
 	m_leditLs = new KeyEdit(this);
 	m_leditSs = new KeyEdit(this);
+	m_leditRv = new KeyEdit(this);
 
 	m_leditLsu = new KeyEdit(this);
 	m_leditLsd = new KeyEdit(this);
@@ -76,41 +79,56 @@ void KeyboardSettingsWidget::Initialize()
 	QPushButton* _pbutSet = new QPushButton(QString::fromLocal8Bit("设置"), this);
 	QPushButton* _pbutReset = new QPushButton(QString::fromLocal8Bit("初始化"), this);
 
-	_layBox->addWidget(_labMo, 0, 0);
-	_layBox->addWidget(m_leditMo, 0, 1);
-	_layBox->addWidget(_labMb, 1, 0);
-	_layBox->addWidget(m_leditMb, 1, 1);
-	_layBox->addWidget(_labTl, 2, 0);
-	_layBox->addWidget(m_leditTl, 2, 1);
-	_layBox->addWidget(_labTr, 3, 0);
-	_layBox->addWidget(m_leditTr, 3, 1);
+	int r = 0, c = 0;
 
-	_layBox->addWidget(_labLu, 4, 0);
-	_layBox->addWidget(m_leditLu, 4, 1);
-	_layBox->addWidget(_labLd, 5, 0);
-	_layBox->addWidget(m_leditLd, 5, 1);
-	_layBox->addWidget(_labLl, 6, 0);
-	_layBox->addWidget(m_leditLl, 6, 1);
-	_layBox->addWidget(_labLr, 7, 0);
-	_layBox->addWidget(m_leditLr, 7, 1);
+	_layBox->addWidget(_labMo, r, c++);
+	_layBox->addWidget(m_leditMo, r, c++);
+	_layBox->addWidget(_labLs, r, c++);
+	_layBox->addWidget(m_leditLs, r++, c++);
 
-	_layBox->addWidget(_labLs, 0, 2);
-	_layBox->addWidget(m_leditLs, 0, 3);
-	_layBox->addWidget(_labSs, 1, 2);
-	_layBox->addWidget(m_leditSs, 1, 3);
+	c = 0;
+	_layBox->addWidget(_labMb, r, c++);
+	_layBox->addWidget(m_leditMb, r, c++);
+	_layBox->addWidget(_labSs, r, c++);
+	_layBox->addWidget(m_leditSs, r++, c++);
+	c = 0;
 
-	_layBox->addWidget(_labLsu, 2, 2);
-	_layBox->addWidget(m_leditLsu, 2, 3);
-	_layBox->addWidget(_labLsd, 3, 2);
-	_layBox->addWidget(m_leditLsd, 3, 3);
+	_layBox->addWidget(_labTl, r, c++);
+	_layBox->addWidget(m_leditTl, r, c++);
+	_layBox->addWidget(_labRv, r, c++);
+	_layBox->addWidget(m_leditRv, r++, c++);
+	c = 0;
 
-	_layBox->addWidget(_labAsu, 4, 2);
-	_layBox->addWidget(m_leditAsu, 4, 3);
-	_layBox->addWidget(_labAsd, 5, 2);
-	_layBox->addWidget(m_leditAsd, 5, 3);
+	_layBox->addWidget(_labTr, r, c++);
+	_layBox->addWidget(m_leditTr, r, c++);
+	_layBox->addWidget(_labLsu, r, c++);
+	_layBox->addWidget(m_leditLsu, r++, c++);
+	c = 0;
 
-	_layBox->addWidget(_pbutSet, 8, 0, 1, 2);
-	_layBox->addWidget(_pbutReset, 8, 2, 1, 2);
+	_layBox->addWidget(_labLu, r, c++);
+	_layBox->addWidget(m_leditLu, r, c++);
+	_layBox->addWidget(_labLsd, r, c++);
+	_layBox->addWidget(m_leditLsd, r++, c++);
+	c = 0;
+
+	_layBox->addWidget(_labLd, r, c++);
+	_layBox->addWidget(m_leditLd, r, c++);
+	_layBox->addWidget(_labAsu, r, c++);
+	_layBox->addWidget(m_leditAsu, r++, c++);
+	c = 0;
+
+	_layBox->addWidget(_labLl, r, c++);
+	_layBox->addWidget(m_leditLl, r, c++);
+	_layBox->addWidget(_labAsd, r, c++);
+	_layBox->addWidget(m_leditAsd, r++, c++);
+	c = 0;
+
+	_layBox->addWidget(_labLr, r, c++);
+	_layBox->addWidget(m_leditLr, r++, c++);
+
+
+	_layBox->addWidget(_pbutSet, r, 0, 1, 2);
+	_layBox->addWidget(_pbutReset, r, 2, 1, 2);
 
 	_box->setLayout(_layBox);
 
@@ -131,6 +149,7 @@ void KeyboardSettingsWidget::Initialize()
 
 	m_leditLs->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	m_leditSs->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+	m_leditRv->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
 	m_leditLsu->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	m_leditLsd->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
@@ -150,6 +169,7 @@ void KeyboardSettingsWidget::Initialize()
 
 	_labLs->setAlignment(Qt::AlignHCenter | Qt::AlignRight);
 	_labSs->setAlignment(Qt::AlignHCenter | Qt::AlignRight);
+	_labRv->setAlignment(Qt::AlignHCenter | Qt::AlignRight);
 
 	_labLsu->setAlignment(Qt::AlignHCenter | Qt::AlignRight);
 	_labLsd->setAlignment(Qt::AlignHCenter | Qt::AlignRight);
@@ -179,6 +199,7 @@ void KeyboardSettingsWidget::PressedSetButton()
 
 	_keys[m_leditLs->GetKey()] = LightSwitch;
 	_keys[m_leditSs->GetKey()] = SpraySwitch;
+	_keys[m_leditRv->GetKey()] = ResetView;
 
 	_keys[m_leditLsu->GetKey()] = LSpeedUp;
 	_keys[m_leditLsd->GetKey()] = LSpeedDown;
@@ -204,6 +225,7 @@ void KeyboardSettingsWidget::PressedResetButton()
 
 	m_leditLs->SetKey(Qt::Key_1);
 	m_leditSs->SetKey(Qt::Key_2);
+	m_leditRv->SetKey(Qt::Key_3);
 
 	m_leditLsu->SetKey(Qt::Key_Up);
 	m_leditLsd->SetKey(Qt::Key_Down);
@@ -264,6 +286,9 @@ void KeyboardSettingsWidget::SetKeyboard(CtrlKeyboard keys)
 			break;
 		case LookRight:
 			m_leditLr->SetKey(key);
+			break;
+		case ResetView:
+			m_leditRv->SetKey(key);
 			break;
 		}
 	}

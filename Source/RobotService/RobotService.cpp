@@ -480,6 +480,8 @@ void RobotService::closeEvent(QCloseEvent* event)
 		m_server->close();
 	}
 
+	m_mapUuids.clear();
+
 	Save();
 	event->accept();
 

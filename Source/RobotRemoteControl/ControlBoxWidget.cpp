@@ -53,24 +53,25 @@ void ControlBoxWidget::Draw(QPainter& painter)
 {
 	QSize _win = size();	/*!< 屏幕尺寸 */
 
-	float _fWidth = _win.width() / 4.0f;
+	float _fWidth = _win.width() / 8.0f;
 	//float _fHeight = _win.height() / 2;
 
-	DrawImage(painter, QRect(_fWidth, 0, _fWidth * 2, _win.height() - _fWidth));
+	//DrawImage(painter, QRect(_fWidth, 0, _fWidth * 2, _win.height() - _fWidth));
+	DrawImage(painter, QRect(0, 0, _win.width(), _win.height()));
 
-	DrawButtonLR(painter, QRect(0, 0, _fWidth, _win.height() - _fWidth), m_buttonL1, m_buttonL2, "LB", "LT");
+	DrawButtonLR(painter, QRect(0, 0, _fWidth, _fWidth * 2), m_buttonL1, m_buttonL2, "LB", "LT");
 
-	DrawCtrlerStatus(painter, QRect(_fWidth, 0, _fWidth * 2, _win.height() - _fWidth));
+	DrawCtrlerStatus(painter, QRect(_fWidth * 3, _win.height() - _fWidth, _fWidth * 2, _fWidth));
 
-	DrawButtonLR(painter, QRect(_fWidth * 3, 0, _fWidth, _win.height() - _fWidth), m_buttonR1, m_buttonR2, "RB", "RT");
+	DrawButtonLR(painter, QRect(_fWidth * 7, 0, _fWidth, _fWidth * 2), m_buttonR1, m_buttonR2, "RB", "RT");
 
 	DrawCross(painter, QRect(0, _win.height() - _fWidth, _fWidth, _fWidth));
 
-	DrawAxisLeft(painter, QRect(_fWidth, _win.height() - _fWidth, _fWidth, _fWidth));
+	DrawAxisLeft(painter, QRect(_fWidth * 2, _win.height() - _fWidth, _fWidth, _fWidth));
 
-	DrawAxisRight(painter, QRect(_fWidth * 2, _win.height() - _fWidth, _fWidth, _fWidth));
+	DrawAxisRight(painter, QRect(_fWidth * 5, _win.height() - _fWidth, _fWidth, _fWidth));
 
-	DrawButtonXYAB(painter, QRect(_fWidth * 3, _win.height() - _fWidth, _fWidth, _fWidth));
+	DrawButtonXYAB(painter, QRect(_fWidth * 7, _win.height() - _fWidth, _fWidth, _fWidth));
 
 	return;
 }

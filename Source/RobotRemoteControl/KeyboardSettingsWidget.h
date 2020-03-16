@@ -27,6 +27,7 @@ enum CtrlKeys
 	LookDown,		/*!< 摄像头低下按键 */
 	LookLeft,		/*!< 摄像头左转按键 */
 	LookRight,		/*!< 摄像头右转按键 */
+	ResetView,		/*!< 重置视图方向 */
 };
 
 typedef	QMap< Qt::Key, CtrlKeys> CtrlKeyboard;
@@ -59,6 +60,7 @@ private:
 
 	KeyEdit* m_leditSs;
 	KeyEdit* m_leditLs;
+	KeyEdit* m_leditRv;
 
 	KeyEdit* m_leditLsu;
 	KeyEdit* m_leditLsd;

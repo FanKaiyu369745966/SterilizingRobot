@@ -94,7 +94,7 @@ void RobotClient::SubscriberBreak()
 
 	m_mutex.unlock();
 
-	emit Record("Client", m_strUuid, GetAddress(), "Send", _result);
+	//emit Record("Client", m_strUuid, GetAddress(), "Resend", _result);
 
 	return;
 }
