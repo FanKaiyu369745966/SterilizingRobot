@@ -18,6 +18,7 @@ private:
 	//Ui::ImageWidge ui;
 protected:
 	QPixmap* m_pix;
+	QImage* m_img;
 private:
 	void Initialize();
 public:
@@ -27,4 +28,5 @@ public:
 protected:
 	void paintEvent(QPaintEvent* event);
 	void resizeEvent(QResizeEvent* event);
+	void DrawImage(QPainter&, QRect);
 };

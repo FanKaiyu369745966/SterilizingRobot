@@ -643,11 +643,11 @@ void RobotRemoteControl::RemoveSubTab(int index)
 
 void RobotRemoteControl::axisLeftXChanged(double value)
 {
-	if (value == 1.0)
+	if (value > 0.9)
 	{// 向右
 		m_mov = CtrlKeys::TurnRight;
 	}
-	else if (value == -1.0)
+	else if (value < -0.9)
 	{// 向左
 		m_mov = CtrlKeys::TurnLeft;
 	}
@@ -676,11 +676,12 @@ void RobotRemoteControl::axisLeftXChanged(double value)
 
 void RobotRemoteControl::axisLeftYChanged(double value)
 {
-	if (value == 1.0)
+	qDebug() << value;
+	if (value > 0.9)
 	{// 向右
 		m_mov = CtrlKeys::MoveBack;
 	}
-	else if (value == -1.0)
+	else if (value < -0.9)
 	{// 向左
 		m_mov = CtrlKeys::MoveOn;
 	}
@@ -709,15 +710,15 @@ void RobotRemoteControl::axisLeftYChanged(double value)
 
 void RobotRemoteControl::axisRightXChanged(double value)
 {
-	if (value > 0)
+	if (value > 0.9)
 	{// 向右
 		m_eyes = CtrlKeys::LookRight;
 	}
-	else if (value < 0)
+	else if (value < -0.9)
 	{// 向左
 		m_eyes = CtrlKeys::LookLeft;
 	}
-	else
+	else if (value == 0.0)
 	{// 停止
 		if (m_eyes == LookRight || m_eyes == LookLeft)
 		{
@@ -742,15 +743,15 @@ void RobotRemoteControl::axisRightXChanged(double value)
 
 void RobotRemoteControl::axisRightYChanged(double value)
 {
-	if (value > 0)
+	if (value > 0.9)
 	{// 向右
 		m_eyes = CtrlKeys::LookUp;
 	}
-	else if (value < 0)
+	else if (value < -0.9)
 	{// 向左
 		m_eyes = CtrlKeys::LookDown;
 	}
-	else
+	else if (value == 0.0)
 	{// 停止
 		if (m_eyes == LookUp || m_eyes == LookDown)
 		{

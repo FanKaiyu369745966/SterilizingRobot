@@ -328,13 +328,6 @@ void ControlBoxWidget::DrawCtrlerStatus(QPainter& painter, QRect rect)
 	return;
 }
 
-void ControlBoxWidget::DrawImage(QPainter& painter, QRect rect)
-{
-	painter.drawPixmap(rect, *m_pix);
-
-	return;
-}
-
 QPoint ControlBoxWidget::GetEllipse(QPoint out, QPoint in, double R)
 {
 	double ix, iy, ox, oy;
