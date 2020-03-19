@@ -79,7 +79,7 @@ private:
 	QString CreatePackage(QString to, QJsonArray cmd, QJsonArray result);
 	static QString GetDate();
 	void UpdateRobot(QString uuid, bool connected);
-	void UpdateRobot(QString uuid, int battery, int residual, bool spray, int speed, int lspeed, int aspeed, int x, int y);
+	void UpdateRobot(QString uuid, int battery, int residual, bool spray, bool obs, int speed, int lspeed, int aspeed, int x, int y);
 	void UpdateRobot(QString uuid, QByteArray img);
 private:
 	/*!

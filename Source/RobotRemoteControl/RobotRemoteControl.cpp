@@ -186,7 +186,8 @@ void RobotRemoteControl::Initialize()
 	m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("电量"));
 	m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("容量"));
 	m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("喷雾开关"));
-	m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("速度"));
+	m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("避障状态"));
+	//m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("速度"));
 	//m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("线速度(设定值)"));
 	//m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("角速度(设定值)"));
 	//m_model->setHeaderData(_index++, Qt::Horizontal, QString::fromLocal8Bit("坐标"));
@@ -1450,7 +1451,7 @@ void RobotRemoteControl::ReadData()
 			{
 				// 更新机器人数据
 				int _lSpeed = 0, _aSpeed = 0, _battery = 0, _residual = 0;
-				bool _spray = false;
+				bool _spray = false, _obs = false;
 
 				QJsonObject jStatus = _jobjCmd.value(*itK).toObject();
 				_lSpeed = jStatus.value("LSpeed").toInt();
@@ -1458,8 +1459,9 @@ void RobotRemoteControl::ReadData()
 				_spray = jStatus.value("Spray").toBool();
 				_battery = jStatus.value("Electric").toInt();
 				_residual = jStatus.value("Water").toInt();
+				_obs = jStatus.value("Obsta").toBool();
 
-				UpdateRobot(_uuid, _battery, _residual, _spray, 0, _lSpeed, _aSpeed, 0, 0);
+				UpdateRobot(_uuid, _battery, _residual, _spray, _obs, 0, _lSpeed, _aSpeed, 0, 0);
 			}
 		}
 	}
@@ -1638,7 +1640,7 @@ bool RobotRemoteControl::AddRobot(QString uuid)
 	_list.push_back(new QStandardItem(QString::fromLocal8Bit("0%")));
 	_list.push_back(new QStandardItem(QString::fromLocal8Bit("0%")));
 	_list.push_back(new QStandardItem(QString::fromLocal8Bit("关")));
-	_list.push_back(new QStandardItem(QString::fromLocal8Bit("0%")));
+	_list.push_back(new QStandardItem(QString::fromLocal8Bit("无")));
 
 	m_model->appendRow(_list);
 
@@ -1819,7 +1821,7 @@ void RobotRemoteControl::UpdateRobot(QString uuid, bool connected)
 	return;
 }
 
-void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bool spray, int speed, int lspeed, int aspeed, int x, int y)
+void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bool spray, bool obs, int speed, int lspeed, int aspeed, int x, int y)
 {
 	for (int i = 0; i < m_model->rowCount(); ++i)
 	{
@@ -1830,30 +1832,43 @@ void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bo
 			continue;
 		}
 
-		m_model->item(i, 2)->setText(QString::fromLocal8Bit("%1").arg(battery));
-		m_model->item(i, 3)->setText(QString::fromLocal8Bit("%1").arg(residual));
+		int index = 2;
+
+		m_model->item(i, index++)->setText(QString::fromLocal8Bit("%1").arg(battery));
+		m_model->item(i, index++)->setText(QString::fromLocal8Bit("%1").arg(residual));
 
 		if (spray)
 		{
-			m_model->item(i, 4)->setText(QString::fromLocal8Bit("开"));
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("开"));
 		}
 		else
 		{
-			m_model->item(i, 4)->setText(QString::fromLocal8Bit("关"));
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("关"));
 		}
 
-		m_model->item(i, 5)->setText(QString::fromLocal8Bit("%1").arg(speed));
+		if (obs)
+		{
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("检测到障碍物"));
+		}
+		else
+		{
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("无"));
+		}
 
-		m_model->item(i, 2)->setToolTip(m_model->item(i, 2)->text());
-		m_model->item(i, 3)->setToolTip(m_model->item(i, 3)->text());
-		m_model->item(i, 4)->setToolTip(m_model->item(i, 4)->text());
-		m_model->item(i, 5)->setToolTip(m_model->item(i, 5)->text());
+		//m_model->item(i, index++)->setText(QString::fromLocal8Bit("%1").arg(speed));
+
+		index = 2;
+
+		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
+		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
+		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
+		m_model->item(i, index)->setToolTip(m_model->item(i, index++)->text()); ++index;
 	}
 
 	if (m_mapRobotWidgets.find(uuid) != m_mapRobotWidgets.end())
 	{
 		// 更新机器人连接状态
-		m_mapRobotWidgets[uuid]->Update(battery, residual, spray, speed, lspeed, aspeed, x, y);
+		m_mapRobotWidgets[uuid]->Update(battery, residual, spray, obs, speed, lspeed, aspeed, x, y);
 	}
 
 	return;

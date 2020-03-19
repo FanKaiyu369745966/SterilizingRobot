@@ -27,7 +27,7 @@ RobotClientWidget::RobotClientWidget(QString uuid, QWidget* parent)
 	m_leditBattery->setText(QString::fromLocal8Bit("0%"));
 	m_leditResidual->setText(QString::fromLocal8Bit("0%"));
 	m_leditSpray->setText(QString::fromLocal8Bit("关"));
-	m_leditSpeed->setText(QString::fromLocal8Bit("0%"));
+	m_leditSpeed->setText(QString::fromLocal8Bit("无"));
 	m_leditLSpeed->setText(QString::fromLocal8Bit("%1%").arg(m_nLSpeed));
 	m_leditASpeed->setText(QString::fromLocal8Bit("%1%").arg(m_nASpeed));
 	m_leditPosX->setText(QString::fromLocal8Bit("0"));
@@ -49,7 +49,7 @@ void RobotClientWidget::Initialize()
 	QLabel* _labBattery = new QLabel(QString::fromLocal8Bit("电量："), this);
 	QLabel* _labResidual = new QLabel(QString::fromLocal8Bit("容量："), this);
 	QLabel* _labSpray = new QLabel(QString::fromLocal8Bit("喷雾开关："), this);
-	QLabel* _labSpeed = new QLabel(QString::fromLocal8Bit("速度："), this);
+	QLabel* _labSpeed = new QLabel(QString::fromLocal8Bit("避障状态："), this);
 	QLabel* _labLSpeed = new QLabel(QString::fromLocal8Bit("线速度(设定值)："), this);
 	QLabel* _labASpeed = new QLabel(QString::fromLocal8Bit("角速度(设定值)："), this);
 	QLabel* _labPosX = new QLabel(QString::fromLocal8Bit("X坐标："), this);
@@ -179,7 +179,7 @@ void RobotClientWidget::Update(bool connected)
 	return;
 }
 
-void RobotClientWidget::Update(int battery, int residual, bool spray, int speed, int lspeed, int aspeed, int x, int y)
+void RobotClientWidget::Update(int battery, int residual, bool obs, bool spray, int speed, int lspeed, int aspeed, int x, int y)
 {
 	m_leditBattery->setText(QString::fromLocal8Bit("%1%").arg(battery));
 	m_leditResidual->setText(QString::fromLocal8Bit("%1%").arg(residual));
@@ -194,7 +194,16 @@ void RobotClientWidget::Update(int battery, int residual, bool spray, int speed,
 		m_leditSpray->setText(QString::fromLocal8Bit("关"));
 	}
 
-	m_leditSpeed->setText(QString::fromLocal8Bit("%1%").arg(speed));
+	if (obs)
+	{
+		m_leditSpeed->setText(QString::fromLocal8Bit("检测到障碍物"));
+	}
+	else
+	{
+		m_leditSpeed->setText(QString::fromLocal8Bit("无"));
+	}
+
+	//m_leditSpeed->setText(QString::fromLocal8Bit("%1%").arg(speed));
 
 	m_nLSpeed = lspeed;
 	m_nASpeed = aspeed;

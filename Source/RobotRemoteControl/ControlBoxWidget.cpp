@@ -53,6 +53,11 @@ void ControlBoxWidget::Draw(QPainter& painter)
 {
 	QSize _win = size();	/*!< 屏幕尺寸 */
 
+	if (_win.width() == 0 || _win.height() == 0)
+	{
+		return;
+	}
+
 	float _fWidth = _win.width() / 8.0f;
 	//float _fHeight = _win.height() / 2;
 
@@ -92,23 +97,26 @@ void ControlBoxWidget::DrawAxis(QPainter& painter, QRect rect, double axisX, dou
 
 	float _inCircleR = _outCircleR / 2.0;	/*!< 左右摇杆小圆半径 */
 
-	QPoint _axis;
+	QPoint _axis;		/*!< 摇杆的中心点 */
 
 	_axis.setX(rect.x() + rect.width() / 2.0f);
 	_axis.setY(rect.y() + rect.width() / 2.0f);
 
-	QPoint _button;
+	QPoint _button;		/*!< L3/R3键中心点 */
 
 	_button.setX(_axis.x() + _outCircleR * axisX);
 	_button.setY(_axis.y() + _outCircleR * axisY);
 
+	// 获取小圆的中心坐标
 	_button = GetEllipse(_axis, _button, _outCircleR);
 
+	// 绘制摇杆大圆
 	painter.setPen(QPen(Qt::white, 2, Qt::SolidLine));
 	painter.drawEllipse(_axis, (int)_outCircleR, (int)_outCircleR);
 
 	painter.setPen(Qt::NoPen);
 
+	// 绘制小圆按钮
 	if (button)
 	{
 		painter.setBrush(Qt::blue);
@@ -120,6 +128,7 @@ void ControlBoxWidget::DrawAxis(QPainter& painter, QRect rect, double axisX, dou
 
 	painter.drawEllipse(_button, (int)_inCircleR, (int)_inCircleR);
 
+	// 绘制文字
 	painter.setBrush(Qt::NoBrush);
 
 	painter.setPen(Qt::black);
@@ -143,12 +152,13 @@ void ControlBoxWidget::DrawAxis(QPainter& painter, QRect rect, double axisX, dou
 
 void ControlBoxWidget::DrawCross(QPainter& painter, QRect rect)
 {
-	float _outCircleR = rect.width() / 2.0;
+	float _outCircleR = rect.width() / 2.0;	/*!< 大圆半径 */
 
-	QPoint _center;
+	QPoint _center;							/*!< 中心坐标 */
 	_center.setX(rect.x() + rect.width() / 2.0f);
 	_center.setY(rect.y() + rect.width() / 2.0f);
 
+	// 绘制大圆
 	painter.setPen(QPen(Qt::white, 2, Qt::SolidLine));
 	painter.drawEllipse(_center, (int)_outCircleR, (int)_outCircleR);
 
@@ -158,11 +168,13 @@ void ControlBoxWidget::DrawCross(QPainter& painter, QRect rect)
 
 	double b = sqrt(pow(_outCircleR, 2) - pow(a, 2));
 
+	// 绘制十字按键
 	DrawCrossKey(painter, QRect(_center.x() - a, _center.y() - b, a * 2, b), m_buttonUp);
 	DrawCrossKey(painter, QRect(_center.x() - a, _center.y(), a * 2, b), m_buttonDown);
 	DrawCrossKey(painter, QRect(_center.x() - b, _center.y() - a, b, a * 2), m_buttonLeft);
 	DrawCrossKey(painter, QRect(_center.x(), _center.y() - a, b, a * 2), m_buttonRight);
 
+	// 绘制中心黑圆
 	painter.setBrush(Qt::black);
 	painter.drawEllipse(_center, (int)(_outCircleR / 4.0f), (int)(_outCircleR / 4.0f));
 
@@ -220,6 +232,7 @@ void ControlBoxWidget::DrawButton(QPainter& painter, QRect rect, bool button, QS
 
 	painter.setBrush(Qt::NoBrush);
 
+	// 绘制文字
 	painter.setPen(Qt::black);
 
 	QFont _oldFont = painter.font();
@@ -241,6 +254,7 @@ void ControlBoxWidget::DrawButton(QPainter& painter, QRect rect, bool button, QS
 
 void ControlBoxWidget::DrawButtonLR(QPainter& painter, QRect rect, bool button1, double button2, QString text1, QString text2)
 {
+	// 绘制L2/R2键
 	painter.setPen(Qt::NoPen);
 
 	float _fHeight = rect.height() / 3;
@@ -259,6 +273,7 @@ void ControlBoxWidget::DrawButtonLR(QPainter& painter, QRect rect, bool button1,
 
 	painter.setBrush(Qt::NoBrush);
 
+	// 绘制L1/R1键
 	QRect rectL1(rectL2.x(), rect.y() + _fHeight + 30, rect.width() - 20, _fHeight);
 
 	if (button1)
@@ -280,6 +295,7 @@ void ControlBoxWidget::DrawButtonLR(QPainter& painter, QRect rect, bool button1,
 
 	painter.setPen(Qt::NoPen);
 
+	// 绘制文字
 	painter.setPen(Qt::black);
 
 	QFont _oldFont = painter.font();

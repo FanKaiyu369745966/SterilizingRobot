@@ -3,7 +3,6 @@
 
 ImageWidge::ImageWidge(QWidget* parent)
 	: QWidget(parent)
-	, m_pix(nullptr)
 	, m_img(nullptr)
 {
 	// ui.setupUi(this);

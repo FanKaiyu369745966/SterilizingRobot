@@ -17,7 +17,6 @@ public:
 private:
 	//Ui::ImageWidge ui;
 protected:
-	QPixmap* m_pix;
 	QImage* m_img;
 private:
 	void Initialize();
