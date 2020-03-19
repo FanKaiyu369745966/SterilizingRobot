@@ -1352,6 +1352,12 @@ void RobotRemoteControl::ServerDisconnected()
 	for (int i = 0; i < m_model->rowCount(); ++i)
 	{
 		m_model->item(i, 1)->setText(QString::fromLocal8Bit("未连接"));
+
+		if (m_mapRobotWidgets.find(m_model->item(i)->text()) != m_mapRobotWidgets.end())
+		{
+			// 更新机器人连接状态
+			m_mapRobotWidgets[m_model->item(i)->text()]->Update(false);
+		}
 	}
 
 	return;
