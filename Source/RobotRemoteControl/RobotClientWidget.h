@@ -43,7 +43,7 @@ private:
 	void Initialize();
 public:
 	void Update(bool connected);
-	void Update(int battery, int residual, bool spray, bool obs, int speed, int lspeed, int aspeed, int x, int y);
+	void Update(int battery, int residual, int obs, bool obs, int speed, int lspeed, int aspeed, int x, int y);
 	int	LineSpeed() const { return m_nLSpeed; }
 	int	ArcSpeed() const { return m_nASpeed; }
 	bool SparySwitch() const { return m_bSpray; }

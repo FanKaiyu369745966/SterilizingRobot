@@ -1450,8 +1450,8 @@ void RobotRemoteControl::ReadData()
 			else if (*itK == "Device")
 			{
 				// 更新机器人数据
-				int _lSpeed = 0, _aSpeed = 0, _battery = 0, _residual = 0;
-				bool _spray = false, _obs = false;
+				int _lSpeed = 0, _aSpeed = 0, _battery = 0, _residual = 0, _obs = 0;
+				bool _spray = false;
 
 				QJsonObject jStatus = _jobjCmd.value(*itK).toObject();
 				_lSpeed = jStatus.value("LSpeed").toInt();
@@ -1459,7 +1459,7 @@ void RobotRemoteControl::ReadData()
 				_spray = jStatus.value("Spray").toBool();
 				_battery = jStatus.value("Electric").toInt();
 				_residual = jStatus.value("Water").toInt();
-				_obs = jStatus.value("Obsta").toBool();
+				_obs = jStatus.value("Obsta").toInt();
 
 				UpdateRobot(_uuid, _battery, _residual, _spray, _obs, 0, _lSpeed, _aSpeed, 0, 0);
 			}
@@ -1821,7 +1821,7 @@ void RobotRemoteControl::UpdateRobot(QString uuid, bool connected)
 	return;
 }
 
-void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bool spray, bool obs, int speed, int lspeed, int aspeed, int x, int y)
+void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bool spray, int obs, int speed, int lspeed, int aspeed, int x, int y)
 {
 	for (int i = 0; i < m_model->rowCount(); ++i)
 	{
@@ -1846,9 +1846,13 @@ void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bo
 			m_model->item(i, index++)->setText(QString::fromLocal8Bit("关"));
 		}
 
-		if (obs)
+		if (obs > 0)
 		{
-			m_model->item(i, index++)->setText(QString::fromLocal8Bit("检测到障碍物"));
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("前方检测到障碍物"));
+		}
+		else if (obs < 0)
+		{
+			m_model->item(i, index++)->setText(QString::fromLocal8Bit("后方检查到障碍物"));
 		}
 		else
 		{

@@ -179,7 +179,7 @@ void RobotClientWidget::Update(bool connected)
 	return;
 }
 
-void RobotClientWidget::Update(int battery, int residual, bool obs, bool spray, int speed, int lspeed, int aspeed, int x, int y)
+void RobotClientWidget::Update(int battery, int residual, int obs, bool spray, int speed, int lspeed, int aspeed, int x, int y)
 {
 	m_leditBattery->setText(QString::fromLocal8Bit("%1%").arg(battery));
 	m_leditResidual->setText(QString::fromLocal8Bit("%1%").arg(residual));
@@ -194,9 +194,13 @@ void RobotClientWidget::Update(int battery, int residual, bool obs, bool spray, 
 		m_leditSpray->setText(QString::fromLocal8Bit("关"));
 	}
 
-	if (obs)
+	if (obs > 0)
 	{
-		m_leditSpeed->setText(QString::fromLocal8Bit("检测到障碍物"));
+		m_leditSpeed->setText(QString::fromLocal8Bit("前方检测到障碍物"));
+	}
+	else if (obs < 0)
+	{
+		m_leditSpeed->setText(QString::fromLocal8Bit("后方检查到障碍物"));
 	}
 	else
 	{
