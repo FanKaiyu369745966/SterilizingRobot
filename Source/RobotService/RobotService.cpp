@@ -12,6 +12,7 @@ RobotService::RobotService(QWidget* parent)
 	, m_leidtAddr(nullptr)
 	, m_pbutListen(nullptr)
 	, m_modelClnt(nullptr)
+	, m_bClose(false)
 {
 	//ui.setupUi(this);
 
@@ -395,6 +396,11 @@ void RobotService::UpdateClient(QString addr, QStringList takeList)
 
 void RobotService::DeleteClient(QString addr)
 {
+	if (m_bClose)
+	{
+		return;
+	}
+
 	for (int i = 0; i < m_modelClnt->rowCount(); ++i)
 	{
 		QStandardItem* _aItem = m_modelClnt->item(i);
@@ -469,6 +475,8 @@ void RobotService::DeleteSubscriber(QString addr, QStringList takeList)
 
 void RobotService::closeEvent(QCloseEvent* event)
 {
+	m_bClose = true;
+
 	if (m_server->isListening())
 	{
 		Record("Server",

@@ -36,6 +36,7 @@ private:
 	QTcpServer* m_server;
 	QSqlDatabase m_db;
 	QMap<QString, RobotClient*>m_mapUuids;
+	bool m_bClose;
 private:
 	//QComboBox* m_combSource;
 	QLineEdit* m_leditHost;
