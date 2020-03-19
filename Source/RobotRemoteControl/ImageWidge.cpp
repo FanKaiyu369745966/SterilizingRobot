@@ -36,7 +36,7 @@ void ImageWidge::Load(QByteArray data, QString type)
 
 	*m_img = _reader.read();
 
-	qDebug() << data.size();
+	//qDebug() << data.size();
 
 	*m_img = m_img->scaled(320, 180).scaled(this->size(), Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
 	//m_img->scaled(this->size(), Qt::KeepAspectRatio, Qt::TransformationMode::FastTransformation);

@@ -635,7 +635,7 @@ void RobotRemoteControl::RemoveSubTab(int index)
 		return;
 	}
 
-	qDebug() << "Remove Tab:" << _title;
+	//qDebug() << "Remove Tab:" << _title;
 
 	m_tab->removeTab(index);
 
@@ -677,7 +677,7 @@ void RobotRemoteControl::axisLeftXChanged(double value)
 
 void RobotRemoteControl::axisLeftYChanged(double value)
 {
-	qDebug() << value;
+	//qDebug() << value;
 	if (value > 0.9)
 	{// 向右
 		m_mov = CtrlKeys::MoveBack;
@@ -1449,6 +1449,8 @@ void RobotRemoteControl::ReadData()
 			}
 			else if (*itK == "Device")
 			{
+				//qDebug() << _pkg << endl;
+
 				// 更新机器人数据
 				int _lSpeed = 0, _aSpeed = 0, _battery = 0, _residual = 0, _obs = 0;
 				bool _spray = false;
@@ -1460,6 +1462,9 @@ void RobotRemoteControl::ReadData()
 				_battery = jStatus.value("Electric").toInt();
 				_residual = jStatus.value("Water").toInt();
 				_obs = jStatus.value("Obsta").toInt();
+
+				//qDebug() << "Water:" << _residual;
+				//qDebug() << "Obs:" << _obs;
 
 				UpdateRobot(_uuid, _battery, _residual, _spray, _obs, 0, _lSpeed, _aSpeed, 0, 0);
 			}
@@ -1866,7 +1871,7 @@ void RobotRemoteControl::UpdateRobot(QString uuid, int battery, int residual, bo
 		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
 		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
 		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
-		m_model->item(i, index)->setToolTip(m_model->item(i, index++)->text()); ++index;
+		m_model->item(i, index)->setToolTip(m_model->item(i, index)->text()); ++index;
 	}
 
 	if (m_mapRobotWidgets.find(uuid) != m_mapRobotWidgets.end())

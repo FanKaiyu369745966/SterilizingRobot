@@ -179,7 +179,7 @@ void RobotClientWidget::Update(bool connected)
 	return;
 }
 
-void RobotClientWidget::Update(int battery, int residual, int obs, bool spray, int speed, int lspeed, int aspeed, int x, int y)
+void RobotClientWidget::Update(int battery, int residual, bool spray, int obs, int speed, int lspeed, int aspeed, int x, int y)
 {
 	m_leditBattery->setText(QString::fromLocal8Bit("%1%").arg(battery));
 	m_leditResidual->setText(QString::fromLocal8Bit("%1%").arg(residual));
