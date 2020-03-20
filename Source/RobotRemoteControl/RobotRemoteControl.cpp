@@ -1378,7 +1378,7 @@ void RobotRemoteControl::ReadData()
 
 	QByteArrayList _listPkg;
 
-	for (int i = 0; i != _list.size(); ++i)
+	for (int i = 0; i < _list.size(); ++i)
 	{
 		QByteArray _pkg = _list.at(i);
 

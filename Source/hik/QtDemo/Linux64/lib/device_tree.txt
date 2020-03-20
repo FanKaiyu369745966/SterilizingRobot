@@ -1,0 +1,13 @@
+<device>
+123
+192.168.2.64
+8000
+admin
+brain123
+<channel>
+Cameral1
+1
+TCP
+MAINSTREAM
+</channel>
+</device>

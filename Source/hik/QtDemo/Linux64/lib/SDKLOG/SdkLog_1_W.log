@@ -1,0 +1,81 @@
+[2020-03-14 10:58:42.042][INF] Login dev 192.168.2.64:8000.
+[2020-03-14 10:58:42.042][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:42.044][INF] LogonDev1 in[192.168.2.64:8000]
+[2020-03-14 10:58:42.095][INF] CCoreGlobalCtrlBase::LoadDSo, HPR_LoadDSo Succ, Path[libcrypto.so], hHandleRet[16869264]
+[2020-03-14 10:58:42.112][INF] CCoreGlobalCtrlBase::LoadDSo, HPR_LoadDSo Succ, Path[libssl.so], hHandleRet[16894864]
+[2020-03-14 10:58:42.112][INF] SSLTRANSAPI::LoadAPI, libeay, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libcrypto.so]
+[2020-03-14 10:58:42.112][INF] SSLTRANSAPI::LoadAPI, libssl, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libssl.so]
+[2020-03-14 10:58:42.112][ERR] SSLTRANSAPI::IsAllAPILoaded, OpenSSL_version Unload
+[2020-03-14 10:58:42.112][ERR] OpenSSL, Not All Function Loaded!
+[2020-03-14 10:58:42.115][INF] SSLTRANSAPI::PrintVersion, SSLeay_version info [OpenSSL 1.0.2t  10 Sep 2019]
+[2020-03-14 10:58:42.115][INF] CSSLTrans::SSLCtxInit, dwSSLVersion[0], m_fnClientMethodV23
+[2020-03-14 10:58:42.116][ERR]  GetCAPath, Failed, Invalid pPath
+[2020-03-14 10:58:42.126][INF] SSLTRANSAPI::LoadAPI, libeay, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libcrypto.so]
+[2020-03-14 10:58:42.126][INF] SSLTRANSAPI::LoadAPI, libssl, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libssl.so]
+[2020-03-14 10:58:42.126][ERR] SSLTRANSAPI::IsAllAPILoaded, OpenSSL_version Unload
+[2020-03-14 10:58:42.126][ERR] OpenSSL, Not All Function Loaded!
+[2020-03-14 10:58:42.126][INF] SSLTRANSAPI::PrintVersion, SSLeay_version info [OpenSSL 1.0.2t  10 Sep 2019]
+[2020-03-14 10:58:42.126][ERR]  GetCAPath, Failed, Invalid pPath
+[2020-03-14 10:58:42.315][INF] SSLTRANSAPI::LoadAPI, libeay, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libcrypto.so]
+[2020-03-14 10:58:42.315][INF] SSLTRANSAPI::LoadAPI, libssl, Load Real Path[/home/brain/hik/QtDemo/Linux64/lib/libssl.so]
+[2020-03-14 10:58:42.315][ERR] SSLTRANSAPI::IsAllAPILoaded, OpenSSL_version Unload
+[2020-03-14 10:58:42.315][ERR] OpenSSL, Not All Function Loaded!
+[2020-03-14 10:58:42.315][INF] SSLTRANSAPI::PrintVersion, SSLeay_version info [OpenSSL 1.0.2t  10 Sep 2019]
+[2020-03-14 10:58:42.315][ERR]  GetCAPath, Failed, Invalid pPath
+[2020-03-14 10:58:42.316][INF] Login use RSA1024
+[2020-03-14 10:58:42.340][DBG] load full path[.//HCNetSDKCom/libHCVoiceTalk.so] succ
+[2020-03-14 10:58:42.341][INF] The COM:VoiceTalk ver is 6.1.4.7, 2019_12_26.
+[2020-03-14 10:58:42.360][DBG] load full path[.//HCNetSDKCom/libHCGeneralCfgMgr.so] succ
+[2020-03-14 10:58:42.361][INF] The COM:HCGeneralCfgMgr ver is 6.1.4.7, 2019_12_26.
+[2020-03-14 10:58:42.372][DBG] load full path[.//HCNetSDKCom/libHCPlayBack.so] succ
+[2020-03-14 10:58:42.373][INF] The COM:HCPlayback ver is 6.1.4.7, 2019_12_26.
+[2020-03-14 10:58:42.386][DBG] load full path[.//HCNetSDKCom/libHCIndustry.so] succ
+[2020-03-14 10:58:42.387][INF] The COM:HCIndustry ver is 6.1.4.7, 2019_12_26.
+[2020-03-14 10:58:42.397][DBG] load full path[.//HCNetSDKCom/libHCDisplay.so] succ
+[2020-03-14 10:58:42.398][INF] The COM:HCDisplay ver is 6.1.4.7, 2019_12_26.
+[2020-03-14 10:58:42.482][INF] CCoreGlobalCtrl::LoadDSo, enumDllType[0], cTempPath[]
+[2020-03-14 10:58:42.482][INF] GlobalCtrl load [libPlayCtrl.so] with sdk path success and get handle[0xf7ff6568]
+[2020-03-14 10:58:42.483][DBG] ID-IP-CHAN[0-192.168.2.64-1] [CPreviewPlayer::CreatePlayer] create player success, version is[v7.3.7.28]
+[2020-03-14 10:58:42.483][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:42.488][INF] ID-IP-CHAN[0-192.168.2.64-1] [CGetTCPStream::Start] Stream Head Data Callback Start
+[2020-03-14 10:58:42.488][INF] ID-IP-CHAN[0-192.168.2.64-1] [CGetTCPStream::Start] Stream Head Data Callback End
+[2020-03-14 10:58:42.523][INF] ID-IP-CHAN[0-192.168.2.64-1] [CPreviewPlayer::OpenPlayer] open player[12303c4] success
+[2020-03-14 10:58:42.523][INF] CCoreGlobalCtrl::LoadDSo, enumDllType[2], cTempPath[.//HCNetSDKCom/]
+[2020-03-14 10:58:42.536][INF] GlobalCtrl load [.//HCNetSDKCom/libSystemTransform.so] with sdk path success and get handle[0x1b2ec20]
+[2020-03-14 10:58:42.536][INF] CStreamConvert::LoadConvertLib Load Succ, m_iInitCount = 1
+[2020-03-14 10:58:42.537][ERR] CStreamConvert::Convert SYSTRANS_InputData fail -1132666944 [0x800000ff], dataLen[332]
+[2020-03-14 10:58:42.537][DBG] ID-IP-CHAN[0-192.168.2.64-1] RTP Format
+[2020-03-14 10:58:42.538][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:42.544][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:42.740][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:42.931][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:43.128][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:49.767][DBG] CStreamConvert::UnloadConvertLib, m_iInitCount = 0
+[2020-03-14 10:58:51.529][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:51.536][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.695][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.699][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.703][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.707][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.712][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.718][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.725][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:58:58.729][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:01.964][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:01.968][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:01.976][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:02.811][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:02.816][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:02.820][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:02.831][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:02.846][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:05.292][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:05.297][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:05.301][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:05.313][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:05.327][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:07.504][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:07.509][ERR] Link_CreateLink, Start Failed, enumLinkType[0]
+[2020-03-14 10:59:36.230][INF] Listen stop notice thread to exit
+[2020-03-14 10:59:36.267][INF] CTransUnitMgr::UnloadTransUnitLib
+[2020-03-14 10:59:36.283][ERR] Link_CreateLink, Start Failed, enumLinkType[0]

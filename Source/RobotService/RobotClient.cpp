@@ -231,7 +231,7 @@ void RobotClient::ReadData()
 
 		//qDebug() << _list.size();
 
-		for (int i = 0; i != _list.size(); ++i)
+		for (int i = 0; i < _list.size(); ++i)
 		{
 			QByteArray _pkg = _list.at(i);
 

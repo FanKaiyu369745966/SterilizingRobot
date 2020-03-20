@@ -1,0 +1,2 @@
+[2020-03-11 13:48:49.159][ERR] [10.8.98.80:8000]LogonDevice Link_CreateLink fail[7].
+[2020-03-11 13:48:49.159][ERR] CMemberMgrBase::AllocIndex2, MemberStart Failed, iIndex[1]
